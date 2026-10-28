@@ -1,111 +1,416 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --text: #4b4553;
+  --text-h: #1a1622;
+  --muted: #8a8394;
+  --bg: #f6f4f9;
+  --surface: #ffffff;
+  --border: #e3dfe9;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-bg: rgba(124, 58, 237, 0.1);
+  --health: #dc2626;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.08), 0 12px 24px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 16px/1.5 var(--sans);
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    --text: #b4aec0;
+    --text-h: #f3f1f7;
+    --muted: #7d7789;
+    --bg: #14121a;
+    --surface: #1e1b26;
+    --border: #2f2b3a;
+    --accent: #a78bfa;
+    --accent-hover: #c4b5fd;
+    --accent-bg: rgba(167, 139, 250, 0.15);
+    --health: #f87171;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.35), 0 12px 24px rgba(0, 0, 0, 0.35);
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
+}
+
+#root {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  min-height: 100svh;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
+h2,
+h3,
+h4 {
+  color: var(--text-h);
+  line-height: 1.2;
+}
+
+button {
+  padding: 12px 20px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- Nav ---------- */
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+nav a {
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: var(--text);
   font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+nav a:hover {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ---------- Home ---------- */
+
+.homePage {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.homePage h2 {
+  font-size: 2rem;
+  margin: 0 0 12px;
+}
+
+.homePage p {
+  margin: 0 auto;
+  max-width: 55ch;
+  color: var(--muted);
+}
+
+/* ---------- Character list ---------- */
+
+/* the inner wrapper around the cards + "New Character" button */
+.characterList > div:not(.newCharacterForm):not(:has(> h1)) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* "New Character" button shows as a dashed "add" tile at the end of the grid */
+.characterList > div > button {
+  min-height: 160px;
+  color: var(--accent);
+  background: transparent;
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius);
+  font-size: 1.05rem;
+}
+
+.characterList > div > button::before {
+  content: '+';
+  display: block;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.characterList > div > button:hover {
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* error messages (failed fetch / failed submit) */
+#root > h1,
+.characterList h1 {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  padding: 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--health);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--health);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+#root > h1:empty {
+  display: none;
+}
+
+.characterList > div:has(> h1) {
+  text-align: center;
+}
+
+.characterCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.characterCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.characterCard h3 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+}
+
+.characterCard p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+.characterCard h4 {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--health);
+  font-size: 1rem;
+}
+
+.characterCard br {
+  display: none;
+}
+
+/* ---------- Card wrapper + update / edit mode ---------- */
+
+.singleCharacter {
+  display: flex;
+}
+
+.singleCharacter > * {
+  flex: 1;
+}
+
+.characterCard {
+  display: flex;
+  flex-direction: column;
+}
+
+/* "Update Character" button: subtle outline, pinned to the bottom of the card */
+.characterCard button {
+  margin-top: auto;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+}
+
+.characterCard h4 {
+  margin-bottom: 16px;
+}
+
+.characterCard button:hover:not(:disabled) {
+  color: #fff;
+  background: var(--accent);
+}
+
+/* edit form shown in place of the card */
+.singleCharacter form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+  align-content: start;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-hover);
+}
+
+.singleCharacter label,
+.singleCharacter form input,
+.singleCharacter form select {
+  grid-column: 1 / -1;
+}
+
+.singleCharacter label {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--text-h);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.singleCharacter form input,
+.singleCharacter form select {
+  padding: 8px 10px;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
+.singleCharacter form select {
+  padding-right: 32px;
+}
+
+.singleCharacter form button {
+  margin-top: 14px;
+  padding: 10px;
+}
+
+/* Cancel = secondary button */
+.singleCharacter form button + button {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.singleCharacter form button + button:hover {
   color: var(--text-h);
+  background: var(--bg);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* ---------- New character form ---------- */
+
+.newCharacterForm {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px;
+}
+
+.newCharacterForm form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px 16px;
+  align-items: center;
+}
+
+.newCharacterForm label {
+  font-weight: 600;
+  color: var(--text-h);
+  text-align: right;
+}
+
+:is(.newCharacterForm, .singleCharacter) input,
+:is(.newCharacterForm, .singleCharacter) select {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+/* keep fields in the input column even if a label is missing */
+.newCharacterForm select + input,
+.newCharacterForm input + input,
+.newCharacterForm input + select {
+  grid-column: 2;
+}
+
+:is(.newCharacterForm, .singleCharacter) select {
+  appearance: none;
+  padding-right: 36px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a8394' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+:is(.newCharacterForm, .singleCharacter) select option {
+  color: var(--text-h);
+  background: var(--surface);
+}
+
+:is(.newCharacterForm, .singleCharacter) input:focus,
+:is(.newCharacterForm, .singleCharacter) select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.newCharacterForm button {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+}
+
+.newCharacterForm > p {
+  margin: 20px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .newCharacterForm {
+    padding: 20px;
+  }
+
+  .newCharacterForm form {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .newCharacterForm select + input,
+  .newCharacterForm input + input,
+  .newCharacterForm input + select {
+    grid-column: auto;
+  }
+
+  .newCharacterForm label {
+    text-align: left;
+    margin-top: 8px;
+  }
 }
