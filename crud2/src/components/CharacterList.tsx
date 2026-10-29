@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Character } from "../types/Character";
 import { API_URL } from "../../constants"
 import { CharacterCard } from "./CharacterCard";

@@ -233,10 +233,28 @@ nav a:hover {
 
 .singleCharacter {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .singleCharacter > * {
   flex: 1;
+}
+
+/* update error message, shown above the card / edit form */
+.singleCharacter > h4 {
+  flex: none;
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--health);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--health);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
 }
 
 .characterCard {
