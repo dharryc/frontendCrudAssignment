@@ -30,11 +30,9 @@ export function NewCharacter({finished}: props) {
                 },
                 body: JSON.stringify(characterNoId)
             })
-            const response = await serverPost.json()
             if (!serverPost.ok) {
-                // This is thanks to claude, because there's a bunch of ways an error could show up. I did my due dilligance and made sure I understood what was happening though.
-                const firstValidationError = Object.values(response.errors ?? {}).flat()[0]
-                setErrorMessage(response.error ?? firstValidationError ?? response.title ?? "The character could not be created.")
+                const errorData = await serverPost.json().catch(() => ({}))
+                setErrorMessage(errorData.error ?? "The character could not be created.")
             }
             else{
                 finished()

@@ -3,7 +3,6 @@ import type { Character } from "../types/Character";
 import { API_URL } from "../../constants"
 import { CharacterCard } from "./CharacterCard";
 import { NewCharacter } from "./NewCharacter";
-
 export function CharacterList() {
     const [characterList, setCharacterList] = useState<Character[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -15,8 +14,9 @@ export function CharacterList() {
         try {
             const characterResponse = await fetch(`${API_URL}characters`)
             if (!characterResponse.ok) {
-                const errorData = await characterResponse.json()
-                setErrorMessage(errorData.error)
+                // I'm also using this .json().catch() in a few places because claude pointed out that this ensures that if there's error messages that I missed, this will handle that
+                const errorData = await characterResponse.json().catch(() => ({}))
+                setErrorMessage(errorData.error ?? "The characters could not be loaded.")
             } else{
                 const characterData = await characterResponse.json()
                 setCharacterList([...characterData].sort((a, b) => a.name.localeCompare(b.name)))

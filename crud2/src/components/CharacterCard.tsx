@@ -9,6 +9,7 @@ type CharacterCardProps = {
 
 export function CharacterCard({ character, onDelete }: CharacterCardProps) {
     const [characterObject, setCharacter] = useState(character)
+    const [savedCharacter, setSavedCharacter] = useState(character)
     const [isEditing, setIsEditing] = useState(false)
     const classes: Class[] = ["Warrior", "Mage", "Rogue", "Archer"]
     const [errorMessage, setErrorMessage] = useState("")
@@ -23,11 +24,12 @@ export function CharacterCard({ character, onDelete }: CharacterCardProps) {
                 body: JSON.stringify(characterObject)
             })
             if (!serverPut.ok) {
-                const errorData = await serverPut.json()
-                setErrorMessage(errorData.error)
-                setCharacter(character)
+                const errorData = await serverPut.json().catch(() => ({}))
+                setErrorMessage(errorData.error ?? "The character could not be updated.")
+                setCharacter(savedCharacter)
             }
             else {
+                setSavedCharacter(characterObject)
                 setIsEditing(false)
                 setErrorMessage("")
             }
@@ -43,8 +45,8 @@ export function CharacterCard({ character, onDelete }: CharacterCardProps) {
                 method: 'DELETE'
             })
             if (!serverDelete.ok) {
-                const errorData = await serverDelete.json()
-                setErrorMessage(errorData.error)
+                const errorData = await serverDelete.json().catch(() => ({}))
+                setErrorMessage(errorData.error ?? "The character could not be deleted.")
             }
             else {
                 onDelete(character.id)
@@ -91,7 +93,7 @@ export function CharacterCard({ character, onDelete }: CharacterCardProps) {
                     <button onClick={() => {
                         setIsEditing(false)
                         setErrorMessage("")
-                        setCharacter(character)
+                        setCharacter(savedCharacter)
                     }}>Cancel</button>
                 </form>
             ) 
