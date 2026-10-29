@@ -4,9 +4,10 @@ import { API_URL } from "../../constants"
 
 type CharacterCardProps = {
     character: Character,
+    onDelete: (id: Character["id"]) => void
 }
 
-export function CharacterCard({ character }: CharacterCardProps) {
+export function CharacterCard({ character, onDelete }: CharacterCardProps) {
     const [characterObject, setCharacter] = useState(character)
     const [isEditing, setIsEditing] = useState(false)
     const classes: Class[] = ["Warrior", "Mage", "Rogue", "Archer"]
@@ -29,6 +30,24 @@ export function CharacterCard({ character }: CharacterCardProps) {
             else {
                 setIsEditing(false)
                 setErrorMessage("")
+            }
+        }
+        catch {
+            setErrorMessage("Hoooooo BOY! It looks like you broke this in some way (I think you probably didn't have the backend running).")
+        }
+    }
+
+    async function deleteCharacter() {
+        try {
+            const serverDelete = await fetch(`${API_URL}characters/${character.id}`, {
+                method: 'DELETE'
+            })
+            if (!serverDelete.ok) {
+                const errorData = await serverDelete.json()
+                setErrorMessage(errorData.error)
+            }
+            else {
+                onDelete(character.id)
             }
         }
         catch {
@@ -85,6 +104,7 @@ export function CharacterCard({ character }: CharacterCardProps) {
                     <p>Mana: {characterObject.mana}</p>
                     <h4>Health: {characterObject.health}</h4>
                     <button onClick={() => setIsEditing(true)}>Update Character</button>
+                    <button onClick={deleteCharacter}>Delete Character</button>
                     <br />
                 </div >
 

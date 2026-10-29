@@ -12,13 +12,20 @@ export function CharacterList() {
     const [showCharacters, setShowCharacters] = useState(true)
 
     async function getCharacters() {
-        const characterResponse = await fetch(`${API_URL}characters`)
-        if (!characterResponse.ok) {
-            setErrorMessage("OH NO, OH DEAR, NO NO NO NO NO, SOMETHING HAS GONE HORRIBLY ATROCIOUSLY WRONG!!!")
-            return
+        try {
+            const characterResponse = await fetch(`${API_URL}characters`)
+            if (!characterResponse.ok) {
+                const errorData = await characterResponse.json()
+                setErrorMessage(errorData.error)
+            } else{
+                const characterData = await characterResponse.json()
+                setCharacterList([...characterData].sort((a, b) => a.name.localeCompare(b.name)))
+                setErrorMessage("")
+            }
         }
-        const characterData = await characterResponse.json()
-        setCharacterList([...characterData].sort((a, b) => a.name.localeCompare(b.name) ))
+        catch {
+            setErrorMessage("OH NO, OH DEAR, NO NO NO NO NO, SOMETHING HAS GONE HORRIBLY ATROCIOUSLY WRONG!!!")
+        }
         setIsLoading(false)
     }
 
@@ -28,24 +35,28 @@ export function CharacterList() {
     }, [])
 
     return (
-        isLoading ? (<h1>{errorMessage}</h1 >) :
-            (
-                <div className="characterList">
-                    {showCharacters &&
-                        <div>
-                            {characterList.map((character) => <CharacterCard character={character} key={character.id} />)}
-                            <button onClick={() => {
-                                setShowNewCharacter(true)
-                                setShowCharacters(false)
-                            }}>New Character</button>
-                        </div>
-                    }
-                    {showNewCharacter && <NewCharacter finished={() => {
-                        setShowCharacters(true)
-                        setShowNewCharacter(false)
-                        getCharacters()
-                    }} />}
-                </div>
-            )
+        isLoading ? (<h1 className="loadingMessage">Loading characters...</h1>) :
+            errorMessage ? (<h1>{errorMessage}</h1>) :
+                (
+                    <div className="characterList">
+                        {showCharacters &&
+                            <div>
+                                {characterList.map((character) => <CharacterCard
+                                    character={character}
+                                    key={character.id}
+                                    onDelete={(id) => setCharacterList(characterList.filter((c) => c.id !== id))} />)}
+                                <button onClick={() => {
+                                    setShowNewCharacter(true)
+                                    setShowCharacters(false)
+                                }}>New Character</button>
+                            </div>
+                        }
+                        {showNewCharacter && <NewCharacter finished={() => {
+                            setShowCharacters(true)
+                            setShowNewCharacter(false)
+                            getCharacters()
+                        }} />}
+                    </div>
+                )
     )
 }

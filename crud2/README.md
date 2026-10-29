@@ -1,75 +1,21 @@
-# React + TypeScript + Vite
+# A brief forward
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+So basically, I didn't read the entire assignment, so I fixed some of the problems first. I've now "un-fixed" those fixes to do this part of the assignment...
 
-Currently, two official plugins are available:
+## Answers:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Which updates succeeded, and which failed?
+Uther: FAILED
+Shadowheart: FAILED
+Geralt: FAILED
 
-## React Compiler
+- What error messages did the backend return?
+Uther: Name must be alphanumeric
+Shadowheart: Invalid character class
+Geralt: Name must be alphanumeric 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Why might a character be successfully retrieved but rejected when updated?
+It looks like it's because ultimately it gets compiled down to js, it doesn't actually do any checking on the get request. It's still doing the checking when you go to update it, and when it gets sent to the backend, hence the faliure there, but it works on the get request.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- How does your React application display API errors?
+I use a conditionally rendered errorMessage field, and it renders any time it isn't empty. If it's empty, it renders the real content instead, and if it's got some content, it displays the error.

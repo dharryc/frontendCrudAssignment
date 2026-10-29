@@ -57,8 +57,8 @@ public class CharacterService
         // Extra structural rules
         // ---------------------------
 
-        if (!Regex.IsMatch(dto.Name, @"^[a-zA-Z0-9 ]+$"))
-            throw new ValidationException("Name may contain only letters, numbers and spaces.");
+        if (!Regex.IsMatch(dto.Name, @"^[a-zA-Z0-9]+$"))
+            throw new ValidationException("Name must be alphanumeric.");
 
         var validClasses = new[] { "Warrior", "Mage", "Rogue", "Archer" };
 
@@ -119,8 +119,8 @@ public class CharacterService
         dto.Name = dto.Name.Trim();
         dto.Class = dto.Class.Trim();
 
-        if (!Regex.IsMatch(dto.Name, @"^[a-zA-Z0-9 ]+$"))
-            throw new ValidationException("Name may contain only letters, numbers and spaces.");
+        if (!Regex.IsMatch(dto.Name, @"^[a-zA-Z0-9]+$"))
+            throw new ValidationException("Name must be alphanumeric.");
 
         var validClasses = new[] { "Warrior", "Mage", "Rogue", "Archer" };
 

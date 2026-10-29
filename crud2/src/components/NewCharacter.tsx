@@ -21,6 +21,7 @@ export function NewCharacter({finished}: props) {
 
     async function submitCharacter() {
         const { id, ...characterNoId } = character
+        setErrorMessage("")
         try{
             const serverPost = await fetch(`${API_URL}characters`, {
                 method: 'POST',
@@ -31,7 +32,9 @@ export function NewCharacter({finished}: props) {
             })
             const response = await serverPost.json()
             if (!serverPost.ok) {
-                setErrorMessage(response.error)
+                // This is thanks to claude, because there's a bunch of ways an error could show up. I did my due dilligance and made sure I understood what was happening though.
+                const firstValidationError = Object.values(response.errors ?? {}).flat()[0]
+                setErrorMessage(response.error ?? firstValidationError ?? response.title ?? "The character could not be created.")
             }
             else{
                 finished()
@@ -44,14 +47,8 @@ export function NewCharacter({finished}: props) {
 
     return (
         // I think that a lot of the things in here could use some better handling (Minimum name length, max length, etc) but this seems fine for this assignment?
-        errorMessage ? (
-            <div>
-                <h1>{errorMessage}</h1>
-                <button onClick={() => setErrorMessage("")}>Try again</button>
-            </div>
-        )
-            :
-            (<div className="newCharacterForm">
+        <div className="newCharacterForm">
+                {(errorMessage === "") ? (<></>) : (<h4>{errorMessage}</h4>)}
                 <form action={submitCharacter}>
                     <label>*Name:</label>
                     <input
@@ -83,6 +80,6 @@ export function NewCharacter({finished}: props) {
                     <button type="submit" disabled={disableButton}>Create Character</button>
                 </form>
                 <p>An * indicates a required field</p>
-            </div>)
+        </div>
     )
 }
