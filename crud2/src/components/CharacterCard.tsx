@@ -14,15 +14,16 @@ export function CharacterCard({ character }: CharacterCardProps) {
 
     async function updateCharacter() {
         try {
-            const serverPost = await fetch(`${API_URL}characters/${character.id}`, {
+            const serverPut = await fetch(`${API_URL}characters/${character.id}`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(characterObject)
             })
-            if (!serverPost.ok) {
-                setErrorMessage(`Something has gone horrendiously wrong!!!`)
+            if (!serverPut.ok) {
+                const errorData = await serverPut.json()
+                setErrorMessage(errorData.error)
                 setCharacter(character)
             }
             else {

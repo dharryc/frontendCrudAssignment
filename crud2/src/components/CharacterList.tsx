@@ -18,7 +18,7 @@ export function CharacterList() {
             return
         }
         const characterData = await characterResponse.json()
-        setCharacterList([...characterData])
+        setCharacterList([...characterData].sort((a, b) => a.name.localeCompare(b.name) ))
         setIsLoading(false)
     }
 
