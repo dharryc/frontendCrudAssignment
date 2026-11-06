@@ -17,7 +17,7 @@ export function CharacterList() {
                 // I'm also using this .json().catch() in a few places because claude pointed out that this ensures that if there's error messages that I missed, this will handle that
                 const errorData = await characterResponse.json().catch(() => ({}))
                 setErrorMessage(errorData.error ?? "The characters could not be loaded.")
-            } else{
+            } else {
                 const characterData = await characterResponse.json()
                 setCharacterList([...characterData].sort((a, b) => a.name.localeCompare(b.name)))
                 setErrorMessage("")
@@ -35,28 +35,31 @@ export function CharacterList() {
     }, [])
 
     return (
-        isLoading ? (<h1 className="loadingMessage">Loading characters...</h1>) :
-            errorMessage ? (<h1>{errorMessage}</h1>) :
-                (
-                    <div className="characterList">
-                        {showCharacters &&
-                            <div>
-                                {characterList.map((character) => <CharacterCard
-                                    character={character}
-                                    key={character.id}
-                                    onDelete={(id) => setCharacterList(characterList.filter((c) => c.id !== id))} />)}
-                                <button onClick={() => {
-                                    setShowNewCharacter(true)
-                                    setShowCharacters(false)
-                                }}>New Character</button>
-                            </div>
-                        }
-                        {showNewCharacter && <NewCharacter finished={() => {
-                            setShowCharacters(true)
-                            setShowNewCharacter(false)
-                            getCharacters()
-                        }} />}
-                    </div>
-                )
+        <>
+            <h1>BEHOLD. THE SAD ORIGINAL CODE, WHICH DOES NOT KNOW TO USE THE WONDERS OF TANNERS STACK:</h1>
+            {isLoading ? (<h1 className="loadingMessage">Loading characters...</h1>) :
+                errorMessage ? (<h1>{errorMessage}</h1>) :
+                    (
+                        <div className="characterList">
+                            {showCharacters &&
+                                <div>
+                                    {characterList.map((character) => <CharacterCard
+                                        character={character}
+                                        key={character.id}
+                                        onDelete={(id) => setCharacterList(characterList.filter((c) => c.id !== id))} />)}
+                                    <button onClick={() => {
+                                        setShowNewCharacter(true)
+                                        setShowCharacters(false)
+                                    }}>New Character</button>
+                                </div>
+                            }
+                            {showNewCharacter && <NewCharacter finished={() => {
+                                setShowCharacters(true)
+                                setShowNewCharacter(false)
+                                getCharacters()
+                            }} />}
+                        </div>
+                    )}
+        </>
     )
 }
